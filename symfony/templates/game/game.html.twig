@@ -3,4 +3,19 @@
 {% block body %}
     <h1>New game</h1>
 
+    <b>{{ player1.email }}</b> - AGAINST - <b>{{ player2.email }}</b>
+
+    <div class="game-wrapper">
+        {% for line in game.grid %}
+            <div class="line">
+                {% for row in line %}
+                    <div class="item">
+                        {{ row }}
+                    </div>
+                {% endfor %}
+                <br>
+            </div>
+        {% endfor %}
+
+    </div>
 {% endblock %}

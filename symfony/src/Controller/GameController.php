@@ -29,25 +29,45 @@ class GameController extends Controller
      */
     public function game(EntityManagerInterface $entityManager, Request $request)
     {
-
-        $g = new Game();
-        $g->setGrid([]);
-        $g->setPlayer1($this->getUser());
-
+        $player1 = $this->getUser();
         $player2 = $entityManager->getRepository(Player::class)->findOneBy(['email' => $request->get('email')]);
-        $g->setPlayer2($player2);
-        $g->setPlayerTurn($this->getUser());
-        if ($entityManager->contains($g)) {
-            $this->redirectToRoute('player');
-            throw new \Exception('This game already exists');
-        } else {
-            $entityManager->persist($g);
-            $entityManager->flush();
 
-            $this->addFlash('notice', 'The game has just been created !');
-            $this->redirectToRoute('game', ['gameId' => $g->getId()]);
+        $game = $entityManager->getRepository(Game::class)->findByPlayers($player1, $player2);
+        if (empty($game)) {
+            $this->createGame($player1, $player2, $entityManager);
         }
 
+        return [
+            'game' => $game,
+            'player1' => $player1,
+            'player2' => $player2
+        ];
     }
+
+    private function createGame(Player $player1, Player $player2, EntityManagerInterface $entityManager)
+    {
+        $g = new Game();
+        $g->setGrid($this->getGameTemplate());
+        $g->setPlayer1($player1);
+
+        $g->setPlayer2($player2);
+        $g->setPlayerTurn($this->getUser());
+        $entityManager->persist($g);
+        $entityManager->flush();
+        $this->addFlash('notice', 'The game has just been created !');
+        $this->redirectToRoute('game', ['gameId' => $g->getId()]);
+    }
+
+    private function getGameTemplate () {
+        return [
+          0 => [1 => '0', 2 => '0', 3 => '0', 4 => '0', 5 => '0', 6 => '0', 7 => '0',],
+          1 => [1 => '0', 2 => '0', 3 => '0', 4 => '0', 5 => '0', 6 => '0', 7 => '0',],
+          2 => [1 => '0', 2 => '0', 3 => '0', 4 => '0', 5 => '0', 6 => '0', 7 => '0',],
+          3 => [1 => '0', 2 => '0', 3 => '0', 4 => '0', 5 => '0', 6 => '0', 7 => '0',],
+          4 => [1 => '0', 2 => '0', 3 => '0', 4 => '0', 5 => '0', 6 => '0', 7 => '0',],
+          5 => [1 => '0', 2 => '0', 3 => '0', 4 => '0', 5 => '0', 6 => '0', 7 => '0',],
+        ];
+    }
+
 
 }

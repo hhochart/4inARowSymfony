@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Game;
 use App\Entity\Player;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -38,6 +40,25 @@ class GameRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByPlayers(Player $player1, Player $player2)
+    {
+        $qb = $this->createQueryBuilder('g');
+        $qb->andWhere(
+            $qb->expr()->andX(
+                $qb->expr()->eq('g.player1', ':player1'),
+                $qb->expr()->eq('g.player2', ':player2')
+            )
+        );
+        $qb->setMaxResults(1);
+
+        try {
+            return $qb->setParameter('player1', $player1)->setParameter('player2', $player2)->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+        } catch (NonUniqueResultException $e) {
+        }
+    }
+
     /*
     public function findOneBySomeField($value): ?Game
     {
