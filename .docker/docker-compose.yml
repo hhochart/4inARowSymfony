@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+    ecv_cours_nginx2:
+        build: ./container/nginx
+        container_name: ecv_cours_nginx2
+        links:
+            - ecv_cours_php
+        ports:
+            - 8080:80
+            - 443:443
+
+    ecv_cours_php:
+        build: ./container/php
+        container_name: ecv_cours_php
+        links:
+            - ecv_cours_mariadb2
+        ports:
+            - 8000:8000
+
+    ecv_cours_mariadb2:
+        image: mariadb
+        container_name: ecv_cours_mariadb2
+        env_file:
+            - ./ecv-mariadb.env
+
+    ecv_cours_node2:
+        build: ./container/node
+        container_name: ecv_cours_node2
+
+    ecv_cours_phpmyadmin2:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: ecv_cours_phpmyadmin2
+        ports:
+            - 8036:80
+        links:
+            - ecv_cours_mariadb2
+        env_file:
+            - ./ecv-phpmyadmin.env
+
+    ecv_cours_adminer2:
+        image: adminer
+        container_name: ecv_cours_adminer2
+        ports:
+            - 8037:8080
+        links:
+            - ecv_cours_mariadb2
+
+    ecv_cours_mailcatcher2:
+        build: ./container/mailcatcher
+        container_name: ecv_cours_mailcatcher2
+        ports:
+            - 1025:1025
+            - 1080:1080

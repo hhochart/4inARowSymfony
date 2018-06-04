@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ app.user.username }} !{% endblock %}
+
+{% block body %}
+
+    <div class="example-wrapper">
+        <h1>Hello {{ app.user.username }} ! </h1><br>
+
+        {% if players is not empty %}
+            <h3>Available players</h3>
+            <ul class="list-group">
+                {% for player in players %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ player.email }}
+                        <a href="{{ path('game', {'email' : player.email}) }}">
+                            <span class="badge badge-primary badge-pill">Play !</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="flash-notice alert alert-danger">
+                There is no player available
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

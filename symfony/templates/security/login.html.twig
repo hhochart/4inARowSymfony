@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if error.messageKey is defined %}
+        <div class="flash-notice alert alert-danger">{{ error.messageKey }}</div>
+    {% endif %}
+    <h1>Please sign in to play games</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

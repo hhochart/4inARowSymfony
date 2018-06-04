@@ -1,0 +1,3 @@
+2018/04/12 10:59:36 [emerg] 1#0: host not found in upstream "ecv_cours_php:9000" in /etc/nginx/conf.d/upstream.conf:1
+2018/04/12 12:18:59 [emerg] 1#0: host not found in upstream "ecv_cours_php:9000" in /etc/nginx/conf.d/upstream.conf:1
+2018/04/12 12:29:17 [emerg] 1#0: host not found in upstream "ecv_cours_php:9000" in /etc/nginx/conf.d/upstream.conf:1

@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    ecv_cours_nginx2:
+        volumes:
+            - ../symfony:/var/www/ecv.sf:rw
+            - ./logs/nginx/:/var/log/nginx:rw
+
+    ecv_cours_php:
+        volumes:
+            - ../symfony:/var/www/ecv.sf:rw
+            - ./home/php:/home/dev:rw
+
+    ecv_cours_mariadb2:
+        volumes:
+            - ./data/mariadb:/var/lib/mysql:rw
+
+    ecv_cours_node2:
+        volumes:
+            - ../symfony:/var/www/ecv.sf:rw
+            - ./home/node:/home/dev:rw
